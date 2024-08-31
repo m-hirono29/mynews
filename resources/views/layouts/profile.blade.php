@@ -32,24 +32,49 @@
         <div id="app">
             {{-- 画面上部に表示するナビゲーションバーです　--}}
             
-            <nav class="navber navber-expand-md navber-dark navber-larabel">
+            <nav class="navbar navbar-expand-md navbar-dark navbar-larabel">
                 <div class="container">
-                    <a class="navber-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ url('/') }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>
-                    <button class="navber-toggler" type="button" data-toggle="collapse" data-target="#navberSupportedContent" aria-controls="navberSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navber-toggler-icon"></span>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
                         
                     </button>
                     
-                    <div class="collapse navber-collapse" id="navberSupportedContent">
-                        <!-- Left Side Of Navber -->
-                        <ul class="navber-nav ms-auto">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <!-- Left Side Of navbar -->
+                        <ul class="navbar-nav ms-auto">
                             
                         </ul>
                         
-                        <!-- Right Side Of Navber -->
-                        <ul class="navber-nav">
+                        <!-- Right Side Of navbar -->
+                        <ul class="navbar-nav">
+                            
+                             <!-- Authentication Links -->
+                        {{-- ログインしていなかったらログイン画面へのリンクを表示 --}}
+                        @guest
+                            <li><a class="nav-link" href="{{ route('login') }}">{{ __('messages.login') }}</a></li>
+                        {{-- ログインしていたらユーザー名とログアウトボタンを表示 --}}
+                        @else
+                            <li class="nav-item dropdown">
+                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                 </a>
+
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('messages.logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                            @endguest
                             
                         </ul>
                     </div>
