@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class profile extends Model
+class Profile extends Model
 {
     use HasFactory;
     // 以下を追記
@@ -16,5 +16,5 @@ class profile extends Model
         'gender' => 'required',
         'hobby' => 'required',
         'introduction' => 'required',
-        )
+        );
 }
