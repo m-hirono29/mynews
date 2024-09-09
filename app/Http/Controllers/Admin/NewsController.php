@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 // 以下の１行を追記することでNews　Modelが扱えるようになる
 use App\Models\News;
 
+// 以下を追記７
+use App\Models\History;
+
+use Carbon\Carbon;
+
 class NewsController extends Controller
 {
     // 以下を追記
@@ -49,7 +54,7 @@ class NewsController extends Controller
     // 以下を追記3
     public function index(Request $request)
     {
-        $cond_tiitle = $request->cond_title;
+        $cond_title = $request->cond_title;
         if ($cond_title != '') {
             //　検索されたら検索結果を取得する
             $posts = News::where('title', $cond_title)->get();
@@ -57,7 +62,7 @@ class NewsController extends Controller
             // それ以外はすべてのニュースを取得する
             $posts = News::all();
         }
-        return view('admin.news.index', ['posts' => $posts, 'cond_title' => $cond_tiitle]);
+        return view('admin.news.index', ['posts' => $posts, 'cond_title' => $cond_title]);
     }
     
     // 以下を追記4
@@ -93,6 +98,12 @@ class NewsController extends Controller
         
         // 該当するデータを上書きして保存する
         $news->fill($news_form)->save();
+        
+        //　以下を追記６
+        $history = new History();
+        $history->news_id = $news->id;
+        $history->edited_at = Carbon::now();
+        $history->save();
         
         return redirect('admin/news');
     }
